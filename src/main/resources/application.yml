@@ -72,7 +72,11 @@ zuul:
     api-auth:
       path: /api-auth/**
       serviceId: oauth-server
-
+##配置超时 当前的zuul  spring-cloud-starter-netflix-zuul
+  host:
+    max-per-route-connections: 20000
+    socket-timeout-millis: 10000
+    connect-timeout-millis: 10000
 
 
 
