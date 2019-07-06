@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+
+
+    <contextName>purchaseAndSaleManagement</contextName>
+
+    <property name="logback.logdir" value="/app/systemServiceOauth/logs"/>
+    <property name="logback.appname" value="app"/>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSSS} %contextName [%thread] %5level %logger{36} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 日志文件名称 -->
+        <File>${logback.logdir}/info.${logback.appname}.log</File>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSSS} %contextName [%thread] %5level %logger{36} %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件的路径 -->
+            <FileNamePattern>${logback.logdir}/info.${logback.appname}.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+    </appender>
+
+
+
+
+    <root level="info">
+        <appender-ref ref="file" />
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

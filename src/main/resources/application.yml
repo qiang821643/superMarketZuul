@@ -1,0 +1,80 @@
+
+server:
+  port: 8087
+
+spring:
+  application:
+    name: zuul-server
+  ##mysql配置
+  datasource:
+    url: jdbc:mysql://182.61.53.74:3306/oauth?useUnicode=true&characterEncoding=utf-8&amp;serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 1q2w3e4r
+    initial-size: 5
+    min-idle: 5
+    max-active: 20
+    # 配置获取连接等待超时的时间
+    max-wait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    time-between-eviction-runs-millis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    min-evictable-idle-time-millis: 300000
+    validation-query: SELECT 1 FROM DUAL
+    test-while-idle: true
+    test-on-borrow: false
+    test-on-return: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    pool-prepared-statements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    max-pool-prepared-statement-per-connection-size: 20
+    filters: stat,wall,slf4j
+    use-global-data-source-stat: true
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  ##redis
+  redis:
+    host: 182.61.53.74
+    port: 6379
+    password: 1q2w3e4r
+    timeout: 1000
+  ##jpa
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+logging:
+  level:
+    com.netflix: info
+
+##eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client:
+    ##隔多久拉取服务注册信息
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: http://182.61.53.74:8761/eureka/
+
+##zuul
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      serviceId: integral-server
+    api-auth:
+      path: /api-auth/**
+      serviceId: oauth-server
+
+
+
+
+
+
